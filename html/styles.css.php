@@ -84,26 +84,53 @@ a.yellow {
     width:25px;
     padding-left:20px;
 }
-#date, #time, .label, .wind_now {
+
+.label, .wind_now {
     font-size:<?= $YANPIWS['font_time_date_wind']?>pt;
     font-weight: bold;
 }
 
+.big_time {
+    font-size: 127pt;
+    text-align: center;
+    width: 100%;
+}
+
+.small_time {
+    font-size: <?= $YANPIWS['font_time_date_wind']?>pt;
+    text-align: left;
+    width: fit-content;
+    padding: 5px;
+    display: inline-block;
+}
+
+.big_clock_hide.big_time {
+    display: none;
+}
+
 .label {
     text-transform: uppercase;
-    font-size: <?= $YANPIWS['font_temp_label']?>pt;
 }
-#date, #time{
-    float: left;
+#date, #time, #wind_now{
+    font-weight: bold;
 }
+
 #time:hover{
     cursor: pointer;
 }
 .wind_now {
+    width: fit-content;
+    display: inline-block;
     float: right;
+    padding-left: 30px;
 }
+
+#datetime {
+    display: block;
+}
+
 #date {
-    padding-left: 20px;
+    padding-left: 30px;
 }
 .lowt {
     color: #476b6b;
