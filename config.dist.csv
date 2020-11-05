@@ -16,6 +16,11 @@ labels_109,Out
 # How many temperatures to show on the screen (tested with 1, 2 or 3 - watch out if you do more!)
 temp_count,2
 
+# CSS font sizes
+font_time_date_wind,35
+font_temp,50
+font_temp_label,25
+
 # likely this won't need to change if you're following default install instructions.
 dataPath,/home/pi/YANPIWS/data/
 

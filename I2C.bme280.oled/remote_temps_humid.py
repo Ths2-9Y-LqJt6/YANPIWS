@@ -28,26 +28,27 @@ yanpiws_temp_2 = args.temp_id2
 
 bus_number = args.bus
 
-temp1url = 'http://' + str(yanpiws_ip) + '/ajax.php?raw=1&content=temp&id=' + str(yanpiws_temp_1)
-temp2url = 'http://' + str(yanpiws_ip) + '/ajax.php?raw=1&content=temp&id=' + str(yanpiws_temp_2)
-humid1url = 'http://' + str(yanpiws_ip) + '/ajax.php?raw=1&content=humidity&id=' + str(yanpiws_temp_1)
-humid2url = 'http://' + str(yanpiws_ip) + '/ajax.php?raw=1&content=humidity&id=' + str(yanpiws_temp_2)
-datetime = 'http://' + str(yanpiws_ip) + '/ajax.php?raw=1&content=datetime'
+humidAndTemp1url = 'http://' + str(yanpiws_ip) + '/ajax.php?content=humidity&id=' + str(yanpiws_temp_1)
+humidAndTemp2url = 'http://' + str(yanpiws_ip) + '/ajax.php?content=humidity&id=' + str(yanpiws_temp_2)
+datetime = 'http://' + str(yanpiws_ip) + '/ajax.php?content=datetime'
 
 def get_string_from_url(url):
     import urllib.request
     raw_html = urllib.request.urlopen(url).read().decode('utf-8').rstrip()
     return raw_html
 
-# fetch the cooked up html -> strings
+# fetch the cooked up json -> strings
 import json
-temp1 = json.loads(get_string_from_url(temp1url))
-if yanpiws_temp_2 is not None:
-    temp2 = json.loads(get_string_from_url(temp2url))
-
-humid1 = json.loads(get_string_from_url(humid1url))
-if yanpiws_temp_2 is not None:
-    humid2 = json.loads(get_string_from_url(humid2url))
+humidAndTemp1 = json.loads(get_string_from_url(humidAndTemp1url))
+temp1final = str(int(float(humidAndTemp1[0]['temp']))) + '°' + humidAndTemp1[0]['label']
+if 'humidity' in humidAndTemp1[0]:
+    temp1final = str(int(float(humidAndTemp1[0]['humidity']))) + '% ' + temp1final;
+if yanpiws_temp_2 is not None and humidAndTemp1[0]['humidity'] != '':
+    humidAndTemp2 = json.loads(get_string_from_url(humidAndTemp2url))
+    temp2final = str(int(float(humidAndTemp2[0]['temp']))) + '°' \
+        + str(humidAndTemp2[0]['label'])
+    if 'humidity' in humidAndTemp2[0] and humidAndTemp2[0]['humidity'] != '':
+        temp2final = str(int(float(humidAndTemp2[0]['humidity']))) + '% ' + temp2final;
 
 date_time = json.loads(get_string_from_url(datetime))
 
@@ -120,11 +121,10 @@ font_small = ImageFont.truetype(full_path + "Lato-Heavy.ttf", 12)
 draw.rectangle((0,0,width,height), outline=0, fill=0)
 
 # render the data
-draw.text((0, top ), date_time[0] + ' ' + date_time[1] , font=font_small, fill=255)
-#draw.text((0, top + 18), str(temp1) + ' ' +  temp1 , font=font, fill=255)
-draw.text((0, top + 18), temp1[0][2] + ' ' + temp1[0][3] , font=font, fill=255)
+draw.text((0, top ), date_time['date'] + ' ' + date_time['time'] , font=font_small, fill=255)
+draw.text((0, top + 18), temp1final , font=font, fill=255)
 if yanpiws_temp_2 is not None:
-    draw.text((0, top + 46), temp2[0][2] + ' ' + temp2[0][3] , font=font, fill=255)
+    draw.text((0, top + 46), temp2final , font=font, fill=255)
 
 # Display image.
 disp.image(image)

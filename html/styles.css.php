@@ -1,3 +1,12 @@
+<?php
+global $YANPIWS;
+require_once 'get_data.php';
+getConfig();
+configIsValid();
+$tempWidth = round(100/$YANPIWS['temp_count']);
+header("Content-type: text/css");
+?>
+
 body {
     margin: 10px;
     padding: 10px;
@@ -40,26 +49,17 @@ a.yellow {
 }
 .temp {
     padding-bottom:10px;
-    font-size: 50pt;
+    font-size: <?= $YANPIWS['font_temp']?>pt;
     float: left;
+    text-align: center;
+    width: <?= $tempWidth ?>%;
 }
 
 .temp:last-child  {
-    float: right;
+    text-align: right;
 }
 .temp:first-child  {
-    padding-right: 11%;
-}
-
-/*two temps */
-.temp:first-child:nth-last-child(2),
-.temp:first-child:nth-last-child(2) ~ .temp {
-
-}
-/*three temps */
-.temp:first-child:nth-last-child(3),
-.temp:first-child:nth-last-child(3) ~ .temp {
-
+    text-align: left;
 }
 
 .degrees {
@@ -84,21 +84,25 @@ a.yellow {
     width:25px;
     padding-left:20px;
 }
-.date, .time, .label, .wind_now {
-    font-size:35pt;
+#date, #time, .label, .wind_now {
+    font-size:<?= $YANPIWS['font_time_date_wind']?>pt;
+    font-weight: bold;
 }
 
 .label {
     text-transform: uppercase;
-    font-size: 25pt;
+    font-size: <?= $YANPIWS['font_temp_label']?>pt;
 }
-.date, .time{
+#date, #time{
     float: left;
+}
+#time:hover{
+    cursor: pointer;
 }
 .wind_now {
     float: right;
 }
-.date {
+#date {
     padding-left: 20px;
 }
 .lowt {
@@ -121,6 +125,9 @@ label {
 }
 input {
     width:70%;
+}
+#last_ajax {
+    display: none;
 }
 @media only screen and (max-width : 480px) {
     body {

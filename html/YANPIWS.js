@@ -29,6 +29,25 @@ function loadXMLDoc(URL, targetId, callback) {
 }
 
 /**
+ * handle resizing clock to big then small
+ */
+// todo - use class for defaultSize, remove from signature
+function setClockSize(state, defaultSize){
+    if (state == 'big'){
+        // todo - put all this in a class and then just add and remove class
+        $('#time').css('font-size', '127pt').css('text-align', 'center').css('width', '100%');
+        $('#date').css('text-align', 'center').css('width', '100%');
+        $('.big_clock_hide').hide();
+    } else {
+        // todo - put all this in a class and then just add and remove class
+        $('#time').css('font-size', defaultSize + 'pt').css('text-align', 'left').css('width', 'inherit');
+        $('#date').css('text-align', 'left').css('width', 'inherit');
+        $('.big_clock_hide').show();
+        console.log('using small size: ' + defaultSize);
+    }
+}
+
+/**
  * AJAX call to get updated forecast
  */
 function refreshForecast(){
@@ -50,29 +69,17 @@ function refreshSunrise(){
 }
 
 /**
- * AJAX call to get updated date and time
+ * AJAX call to get updated content and return JSON
  */
-function refeshDateTime(){
-    loadXMLDoc('./ajax.php?content=datetime', 'datetime');
+function refeshData(endpoint, dataElement, target, callback = false){
+    let baseUrl = './ajax.php?content=';
+    $.getJSON( baseUrl + endpoint, function( data ) {
+        $(target).html(data[dataElement]);
+        if (typeof callback === "function") {
+            callback();
+        }
+    });
 }
-
-/**
- * AJAX call to get updated temps
- *
- * @param id int of sensor ID
- * @param id2 string of the DOM ID to put the results in - will concat "temp" + id2
- */
-function refreshTemp(id, id2){
-    loadXMLDoc('./ajax.php?content=temp&id=' + id, 'temp' + id2);
-}
-
-/**
- * AJAX call to get updated wind speed
- */
-function refreshCurrentWind(){
-    loadXMLDoc('./ajax.php?content=wind_now', 'wind_now');
-}
-
 /**
  * start the dark sky canvas DOM elements animating. intended to call if
  * canvas elements have been updated from refreshForecast()
@@ -87,17 +94,4 @@ function animateForecast() {
         }
     );
     skycons.play();
-}
-
-/**
- * check that temps aren't old.  if they are, change text to yellow
- */
-function checkTempAges(){
-    loadXMLDoc('./ajax.php?content=age', 'YANPIWS');
-}
-/**
- * check that temps aren't old.  if they are, change text to yellow
- */
-function refreshLastAjax(){
-    loadXMLDoc('./ajax.php?content=last_ajax', 'dev_null');
 }

@@ -3,8 +3,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <script src="jquery.3.2.1.slim.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="styles.css.php" />
+    <script src="jquery-3.5.1.min.js" ></script>
     <script src="jquery.jqplot.min.js" ></script>
     <link rel="stylesheet" href="HappyHistogram.min.css">
     <link rel="stylesheet" href="jquery.jqplot.min.css">
@@ -66,7 +66,7 @@ $colors = array(null,'white','red','yellow','blue');
         } else {
             $tempsJsSeries .= "\n";
         }
-        echo "\n\trefreshTemp($id,$count);\n";
+        echo "\trefreshTemp($id,$count);\n";
         $count++;
     }
     ?>
@@ -98,7 +98,15 @@ $colors = array(null,'white','red','yellow','blue');
     temp = plot1.themeEngine.newTheme('temp', temp);
     plot1.activateTheme('temp');
 
-
+    /**
+     * AJAX call to get updated temps
+     *
+     * @param id int of sensor ID
+     * @param id2 string of the DOM ID to put the results in - will concat "temp" + id2
+     */
+    function refreshTemp(id, id2){
+        loadXMLDoc('./ajax.php?content=temp&cooked=yes_sir&id=' + id, 'temp' + id2);
+    }
 </script>
 
 </body>

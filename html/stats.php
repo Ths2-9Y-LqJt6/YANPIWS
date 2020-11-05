@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-<meta charset="utf-8">
-</head>
-<body>
-<link rel="stylesheet" type="text/css" href="styles.css" />
 <?php
 require_once "get_data.php";
 getConfig();
@@ -23,16 +16,20 @@ if (isset($_SERVER['SERVER_ADDR'])) {
 }
 
 $darkskytime= getCacheAge();
-
 ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="styles.css.php?<?= $YANPIWS['cache_bust'] ?>" />
 <div class="col">
     <div class="row">
         <p>
             <a href="/" class="homeLink"><-  Weather</a>
-<!--            <br />-->
-<!--            <a href="./config.php" class="homeLink">Config</a>-->
         </p>
-        <a href="https://github.com/Ths2-9Y-LqJt6/YANPIWS">YANPIS 0.9.3</a> - Released Oct 1, 2019<br />
+        <a href="https://github.com/mrjones-plip/YANPIWS">YANPIS 0.9.10</a> - Released Jul 26, 2020<br />
         <a href="https://darksky.net/poweredby/">Powered by Dark Sky</a><br />
         <?php echo $currentTempHtml ?>
         Dark Sky Cache Age: <?php echo $darkskytime ?><br/>
