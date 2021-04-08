@@ -386,4 +386,4 @@ better handle empty config file
 * 0.3 - Mar 23, 2017 - forecast if you have a darksky API
 * 0.2 - Mar 23, 2017 - reading CSV, super basic HTML output
 * 0.1 - Mar 22, 2017 - parsing data, writing to CSV, crude readme, no html output
-           
+            
